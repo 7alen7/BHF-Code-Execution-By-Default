@@ -1,0 +1,11 @@
+#!/bin/sh
+# Proof marker written to the tree the moment govfuzz runs us as "the compiler".
+OUT="$(dirname "$0")/PWNED.txt"
+{
+  echo "govfuzz executed this attacker binary as the compiler from compile_commands.json"
+  echo "when: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  echo "who:  $(id)"
+  echo "argv: $0 $*"
+} > "$OUT"
+# Behave like a real compiler so the harness build proceeds normally.
+exec clang "$@"
